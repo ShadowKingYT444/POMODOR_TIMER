@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BREAK MANAGEr</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="/main.js" defer></script>
+</head>
+
+<body>
+  <!-- Onboarding Modal -->
+  <div id="onboarding-modal" class="modal hidden">
+    <div class="modal-content glass">
+      <h2>Welcome to BREAK MANAGEr</h2>
+      <p>Enter your details to personalize your experience.</p>
+      <input type="text" id="user-name-input" placeholder="Your Name" autocomplete="off" />
+      <input type="text" id="spotify-client-id-input" placeholder="Spotify Client ID (Optional)" autocomplete="off" />
+      <p style="font-size: 0.8rem; margin-top: -10px; margin-bottom: 20px;">
+        Leave Client ID blank to use the default app integration.
+      </p>
+      <button id="save-name-btn" class="btn primary">Start</button>
+    </div>
+  </div>
+
+  <!-- Take a Break Overlay -->
+  <div id="break-overlay" class="overlay hidden">
+    <h1 id="break-message">TAKE A BREAK</h1>
+    <button id="start-break-btn" class="btn danger">OK</button>
+  </div>
+
+  <!-- Main App Container -->
+  <div id="app" class="container">
+
+    <!-- Center: Timer -->
+    <main class="timer-section">
+      <div id="status-text">WORK</div>
+      <div class="timer-display">
+        <input type="number" id="minutes-input" value="25" min="1" max="120" />
+        <span>:</span>
+        <input type="number" id="seconds-input" value="00" min="0" max="59" />
+      </div>
+      <button id="timer-toggle-btn" class="btn play">Start Focus</button>
+    </main>
+
+    <!-- Right Panel: Tasks -->
+    <aside class="tasks-section glass-panel">
+      <h2>Tasks</h2>
+      <form id="task-form">
+        <input type="text" id="new-task-input" placeholder="Add a task..." autocomplete="off" />
+        <button type="submit">+</button>
+      </form>
+      <ul id="task-list"></ul>
+    </aside>
+
+    <!-- Bottom: Spotify -->
+    <footer class="spotify-section glass-panel">
+      <div class="spotify-info">
+        <p id="spotify-song">No song playing</p>
+        <p id="spotify-artist">Connect to Spotify to control playback</p>
+      </div>
+      <div class="spotify-controls">
+        <button id="spot-prev" title="Previous">⏮</button>
+        <button id="spot-play" title="Play/Pause">▶️</button>
+        <button id="spot-next" title="Next">⏭</button>
+      </div>
+      <button id="spotify-login-btn" class="btn spot-login">Login with Spotify</button>
+    </footer>
+  </div>
+</body>
+
+</html>

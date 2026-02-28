@@ -1,0 +1,266 @@
+:root {
+  --bg-color: #000000;
+  --text-main: #ffffff;
+  --text-muted: #888888;
+  --accent: #1db954; /* Spotify green */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --danger: #ff4757;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Glassmorphism utilities */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+/* Buttons */
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+.btn:hover {
+  filter: brightness(1.2);
+  transform: translateY(-2px);
+}
+.btn:active {
+  transform: translateY(0);
+}
+.btn.primary { background: var(--text-main); color: var(--bg-color); }
+.btn.danger { background: white; color: var(--danger); font-size: 1.5rem; padding: 15px 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+.btn.play { background: var(--glass-bg); color: white; border: 1px solid var(--glass-border); width: 200px; font-size: 1.2rem;}
+.btn.spot-login { background: var(--accent); color: black; }
+
+/* Modals & Overlays */
+.hidden { display: none !important; }
+
+.modal, .overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modal { background: rgba(0, 0, 0, 0.85); }
+.modal-content {
+  padding: 50px;
+  text-align: center;
+  width: 450px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+.modal-content h2 { font-size: 2rem; margin-bottom: 10px; }
+.modal-content p { color: var(--text-muted); margin-bottom: 20px; }
+.modal-content input {
+  width: 100%;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 10px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255,255,255,0.05);
+  color: white;
+  font-size: 1.2rem;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.modal-content input:focus { border-color: white; }
+
+.overlay { background: var(--danger); animation: pulseBg 2s infinite; }
+@keyframes pulseBg {
+  0% { background-color: #ff4757; }
+  50% { background-color: #ff6b81; }
+  100% { background-color: #ff4757; }
+}
+
+#break-message {
+  font-size: 6rem;
+  font-weight: 900;
+  margin-bottom: 3rem;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* Main Layout */
+.container {
+  display: grid;
+  grid-template-areas: 
+    "timer tasks"
+    "spotify tasks";
+  grid-template-columns: 1fr 400px;
+  grid-template-rows: 1fr 110px;
+  height: 100vh;
+  width: 100vw;
+  padding: 24px;
+  gap: 24px;
+}
+
+/* Timer Section */
+.timer-section {
+  grid-area: timer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+#status-text {
+  font-size: 2.5rem;
+  letter-spacing: 0.3em;
+  color: var(--text-muted);
+  margin-bottom: -15px;
+  font-weight: 600;
+}
+.timer-display {
+  display: flex;
+  align-items: center;
+  font-size: 22vw;
+  font-weight: 900;
+  line-height: 1;
+  text-shadow: 0 10px 30px rgba(255,255,255,0.1);
+}
+.timer-display input {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: inherit;
+  font-weight: inherit;
+  width: 2.2ch;
+  text-align: center;
+  -moz-appearance: textfield;
+  outline: none;
+}
+.timer-display input:focus { background: rgba(255,255,255,0.05); border-radius: 12px; }
+.timer-display input::-webkit-outer-spin-button,
+.timer-display input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.timer-display span { margin: 0 -30px; padding-bottom: 3vw;}
+
+/* Tasks Section */
+.tasks-section {
+  grid-area: tasks;
+  display: flex;
+  flex-direction: column;
+}
+.tasks-section h2 { margin-bottom: 20px; font-size: 1.8rem; }
+#task-form {
+  display: flex;
+  margin-bottom: 20px;
+}
+#task-form input {
+  flex: 1;
+  padding: 15px;
+  border: none;
+  border-radius: 10px 0 0 10px;
+  background: rgba(255,255,255,0.08);
+  color: white;
+  font-size: 1rem;
+  outline: none;
+}
+#task-form input:focus { background: rgba(255,255,255,0.12); }
+#task-form button {
+  padding: 0 20px;
+  border: none;
+  border-radius: 0 10px 10px 0;
+  background: var(--text-main);
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.5rem;
+  transition: opacity 0.2s;
+}
+#task-form button:hover { opacity: 0.8; }
+#task-list {
+  list-style: none;
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 5px;
+}
+#task-list::-webkit-scrollbar { width: 6px; }
+#task-list::-webkit-scrollbar-track { background: transparent; }
+#task-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+
+#task-list li {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background: rgba(255,255,255,0.05);
+  margin-bottom: 10px;
+  border-radius: 10px;
+  transition: all 0.2s;
+}
+#task-list li:hover { background: rgba(255,255,255,0.1); transform: translateX(-2px); }
+#task-list li.completed { opacity: 0.4; text-decoration: line-through; }
+#task-list li input[type="checkbox"] { margin-right: 15px; width: 20px; height: 20px; cursor: pointer; accent-color: var(--text-main); }
+.delete-task-btn {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px;
+}
+.delete-task-btn:hover { color: var(--danger); }
+
+/* Spotify Section */
+.spotify-section {
+  grid-area: spotify;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.spotify-info { flex: 1; overflow: hidden; white-space: nowrap; }
+#spotify-song { font-weight: bold; font-size: 1.2rem; text-overflow: ellipsis; overflow: hidden; }
+#spotify-artist { color: var(--text-muted); font-size: 1rem; text-overflow: ellipsis; overflow: hidden; }
+.spotify-controls {
+  display: flex;
+  align-items: center;
+  margin: 0 20px;
+}
+.spotify-controls button {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  margin: 0 15px;
+  transition: transform 0.2s, color 0.2s;
+}
+.spotify-controls button:hover { transform: scale(1.1); color: var(--accent); }
