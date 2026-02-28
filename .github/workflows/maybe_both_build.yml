@@ -5,8 +5,10 @@ on:
       - 'v*'
   workflow_dispatch:
 
+# FIX 1: This MUST be at the top level, not indented under 'jobs'
 permissions:
   contents: write
+  discussions: write # Optional: helps some versions of tauri-action
 
 jobs:
   release:
@@ -31,7 +33,6 @@ jobs:
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
         with:
-          # Install universal targets only if on macOS; Windows uses default target
           targets: ${{ matrix.settings.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
       - name: Rust cache
@@ -47,14 +48,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: app-v__VERSION__
+          tagName: v__VERSION__ # Simplified tag name
           releaseName: 'BREAK MANAGEr v__VERSION__'
-          releaseBody: 'Download the installer for your operating system below.'
+          releaseBody: 'Download the installer for your OS below.'
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.settings.args }}
-
-
-    "bundle": {
-      "targets": ["nsis", "dmg"] 
-    }
