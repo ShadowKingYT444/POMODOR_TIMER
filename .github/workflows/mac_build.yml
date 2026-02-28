@@ -5,6 +5,10 @@ on:
       - 'v*'
   workflow_dispatch:
 
+# ADD THIS SECTION HERE
+permissions:
+  contents: write
+
 jobs:
   release:
     strategy:
