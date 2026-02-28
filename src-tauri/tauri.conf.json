@@ -1,10 +1,10 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "tauri-app",
+  "productName": "Break-Manager",
   "version": "0.1.0",
-  "identifier": "com.terry.tauri-app",
+  "identifier": "com.terry.break-manager",
   "build": {
-    "frontendDist": "../src"
+    "frontendDist": "../dist" 
   },
   "app": {
     "withGlobalTauri": true,
@@ -21,7 +21,7 @@
   },
   "bundle": {
     "active": true,
-    "targets": "all",
+    "targets": ["nsis", "dmg"],
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
