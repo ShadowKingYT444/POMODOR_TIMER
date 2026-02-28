@@ -25,6 +25,17 @@ const breakOverlay = document.getElementById('break-overlay');
 const breakMessage = document.getElementById('break-message');
 const startBreakBtn = document.getElementById('start-break-btn');
 
+// --- Sound Effects ---
+function playSpeech(text) {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    window.speechSynthesis.speak(utterance);
+  }
+}
+
 // DOM Elements - Timer
 const statusText = document.getElementById('status-text');
 const minInput = document.getElementById('minutes-input');
@@ -131,27 +142,39 @@ function handleTimerEnd() {
     state.mode = 'BREAK_PROMPT';
     showBreakPrompt();
   } else if (state.mode === 'BREAK') {
-    // End of break, reset to work
-    state.mode = 'WORK';
-    statusText.textContent = 'WORK';
-    statusText.style.color = 'var(--text-muted)';
-    updateDisplay(state.workDuration.m, state.workDuration.s);
-    // Optionally auto-start work or wait for user
+    state.mode = 'WORK_PROMPT';
+    showWorkPrompt();
   }
 }
 
 function showBreakPrompt() {
   breakMessage.textContent = `TAKE A BREAK ${state.userName.toUpperCase()}`;
   breakOverlay.classList.remove('hidden');
+  playSpeech(`Take a break, ${state.userName}`);
+}
+
+function showWorkPrompt() {
+  breakMessage.textContent = `GET BACK TO WORK ${state.userName.toUpperCase()}`;
+  breakOverlay.classList.remove('hidden');
+  playSpeech(`Get back to work, ${state.userName}`);
 }
 
 startBreakBtn.addEventListener('click', () => {
   breakOverlay.classList.add('hidden');
-  state.mode = 'BREAK';
-  statusText.textContent = 'BREAK';
-  statusText.style.color = 'var(--danger)';
-  updateDisplay(state.breakDuration.m, state.breakDuration.s);
-  startTimer(); // Auto start break
+
+  if (state.mode === 'BREAK_PROMPT') {
+    state.mode = 'BREAK';
+    statusText.textContent = 'BREAK';
+    statusText.style.color = 'var(--danger)';
+    updateDisplay(state.breakDuration.m, state.breakDuration.s);
+    startTimer(); // Auto start break
+  } else if (state.mode === 'WORK_PROMPT') {
+    state.mode = 'WORK';
+    statusText.textContent = 'WORK';
+    statusText.style.color = 'var(--text-muted)';
+    updateDisplay(state.workDuration.m, state.workDuration.s);
+    startTimer(); // Auto start work
+  }
 });
 
 timerToggleBtn.addEventListener('click', startTimer);
