@@ -11,10 +11,6 @@
     "windows": [
       {
         "title": "BREAK MANAGEr",
-        "fullscreen": true,
-        "alwaysOnTop": true,
-        "decorations": false,
-        "resizable": false,
         "width": 800,
         "height": 600
       }

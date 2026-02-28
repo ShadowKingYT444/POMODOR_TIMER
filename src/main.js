@@ -355,11 +355,30 @@ spotNextBtn.addEventListener('click', async () => {
   setTimeout(getCurrentlyPlaying, 500);
 });
 
+// --- Auto Reminder Logic ---
+function startAutoReminder() {
+  setInterval(async () => {
+    if (!state.timerRunning && state.mode !== 'BREAK') {
+      try {
+        if (window.__TAURI__ && window.__TAURI__.window) {
+          const appWindow = window.__TAURI__.window.getCurrentWindow();
+          await appWindow.show();
+          await appWindow.setFocus();
+          playSpeech(`Time to get back to work, ${state.userName}`);
+        }
+      } catch (err) {
+        console.warn('Could not focus window:', err);
+      }
+    }
+  }, 5 * 60 * 1000); // 5 minutes
+}
+
 // --- Initialization ---
 function initApp() {
   renderTasks();
   updateDisplay(state.workDuration.m, state.workDuration.s);
   checkSpotifyToken();
+  startAutoReminder();
 }
 
 // Start
