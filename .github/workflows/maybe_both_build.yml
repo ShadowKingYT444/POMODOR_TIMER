@@ -45,7 +45,7 @@ jobs:
 
       # FIX 2: Upgraded to @v2 for Tauri v2 compatibility
       - name: build tauri app
-        uses: tauri-apps/tauri-action@v2
+        uses: tauri-apps/tauri-action
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
