@@ -5,10 +5,9 @@ on:
       - 'v*'
   workflow_dispatch:
 
-# FIX 1: This MUST be at the top level, not indented under 'jobs'
+# FIX 1: Explicit permissions MUST be at this indentation level
 permissions:
   contents: write
-  discussions: write # Optional: helps some versions of tauri-action
 
 jobs:
   release:
@@ -33,6 +32,7 @@ jobs:
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
         with:
+          # Install targets for macOS; Windows uses default
           targets: ${{ matrix.settings.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
       - name: Rust cache
@@ -43,14 +43,16 @@ jobs:
       - name: install dependencies
         run: npm install
 
+      # FIX 2: Upgraded to @v2 for Tauri v2 compatibility
       - name: build tauri app
-        uses: tauri-apps/tauri-action@v0
+        uses: tauri-apps/tauri-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: v__VERSION__ # Simplified tag name
-          releaseName: 'BREAK MANAGEr v__VERSION__'
-          releaseBody: 'Download the installer for your OS below.'
+          # tagName will be taken from the git tag automatically (e.g., v0.1.0)
+          tagName: ${{ github.ref_name }} 
+          releaseName: 'BREAK MANAGEr ${{ github.ref_name }}'
+          releaseBody: 'MacOS (DMG) and Windows (EXE) installers.'
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.settings.args }}
